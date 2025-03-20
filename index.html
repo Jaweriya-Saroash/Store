@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jaweriya Saroash – Premium cloth selling website offering a curated collection of stylish women's apparel." />
+  <title>Jaweriya Saroash</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Using Playfair Display for headings and Open Sans for body -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <!-- AOS CSS for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+  <style>
+    /* Color & Typography Variables */
+    :root {
+      --primary-color: #c7ab9d;    /* Soft brown for accents */
+      --primary-dark: #a88f82;
+      --secondary-color: #4a3c31;  /* Dark brown */
+      --accent-color: #b68a7a;
+      --text-color: #2f2f2f;
+      --light-bg: #f7efe5;
+      --white: #fff;
+      --transition-duration: 0.3s;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--light-bg);
+      color: var(--text-color);
+      transition: background var(--transition-duration), color var(--transition-duration);
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3, .section-heading {
+      font-family: 'Playfair Display', serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    /* Top Bar with Brown Design Line */
+    .top-bar {
+      background: var(--white);
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+    .top-bar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--primary-color);
+    }
+    .navbar {
+      padding-left: 15px;
+    }
+    .navbar-brand img {
+      height: 50px;
+      width: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .navbar-dark .navbar-nav .nav-link.active,
+    .navbar-dark .navbar-nav .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
+    /* Hero Section */
+    .hero {
+      background-color: #fefaf6;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 40px 0;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: url('swirls.png') no-repeat right center;
+      background-size: contain;
+      opacity: 0.1;
+      z-index: 1;
+    }
+    .hero .container {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .hero-text {
+      max-width: 550px;
+    }
+    .hero-text h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--secondary-color);
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .hero-text .btn {
+      background: var(--primary-color);
+      border: none;
+      color: var(--white);
+      padding: 12px 30px;
+      transition: background var(--transition-duration);
+    }
+    .hero-text .btn:hover {
+      background: var(--primary-dark);
+    }
+    .hero-img {
+      text-align: center;
+      flex: 1;
+    }
+    /* Bigger hero image */
+    .hero-img img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    /* Sections */
+    .section {
+      padding: 60px 0;
+    }
+    @media (max-width: 576px) {
+      .section {
+        padding: 30px 0;
+      }
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Products Section */
+    #products {
+      padding: 100px 30px 30px;
+    }
+    #products h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.4em;
+    }
+    #product-filter {
+      max-width: 400px;
+      margin: 0 auto 30px;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .card-content {
+      padding: 20px;
+      text-align: center;
+    }
+    .card-content p {
+      margin-bottom: 10px;
+    }
+    .price {
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .product-card button {
+      background: var(--primary-color);
+      color: var(--white);
+      border: none;
+      padding: 12px 15px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background var(--transition-duration);
+      margin: 5px;
+    }
+    .product-card button:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Carousel arrow controls */
+    .carousel-control-prev,
+    .carousel-control-next {
+      opacity: 0;
+      transition: opacity 0.3s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      z-index: 10;
+    }
+    .carousel:hover .carousel-control-prev,
+    .carousel:hover .carousel-control-next {
+      opacity: 1;
+    }
+
+    /* Contact Section */
+    #contact {
+      padding: 60px 0;
+    }
+
+    /* Cart Modal & Notification */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: var(--white);
+      margin: 10% auto;
+      padding: 30px;
+      max-width: 600px;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      animation: slideDown 0.5s;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      color: var(--secondary-color);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .close-btn:hover {
+      color: var(--accent-color);
+    }
+    #notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.7);
+      color: var(--white);
+      padding: 15px 30px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      z-index: 3000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #notification.show {
+      opacity: 1;
+    }
+
+    /* Scroll-to-Top Button */
+    #scrollToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--accent-color);
+      color: var(--white);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+      transition: background 0.3s;
+    }
+    #scrollToTop:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar with Brown Design Line -->
+  <div class="top-bar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <!-- Brand Name -->
+        <a class="navbar-brand d-flex align-items-center" href="#home">
+          <img src="logo.jpg" alt="Jaweriya Saroash Logo" loading="lazy" />
+          <span>Jaweriya Saroash</span>
+        </a>
+
+        <!-- Toggler for mobile view -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Items: Shop & About Us -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="#products">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About Us</a>
+            </li>
+            <!-- Search Bar -->
+            <li class="nav-item ms-3">
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+            </li>
+            <!-- Cart Link -->
+            <li class="nav-item ms-3">
+              <a class="nav-link" href="#" id="cart-link">
+                Cart (<span id="cart-count">0</span>)
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <header id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <!-- Left Text -->
+        <div class="hero-text">
+          <h1>Style That Speaks</h1>
+          <p>
+            Using every aspect—from fabric to accessories—our collections celebrate individuality and empower women.
+          </p>
+          <a href="#products" class="btn">Explore</a>
+        </div>
+        <!-- Right Image (Bigger Hero Image) -->
+        <div class="hero-img">
+          <img src="hsi.png" alt="Fashionable Woman" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container" data-aos="fade-right">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center mb-4 mb-md-0">
+          <img src="logo.jpg" class="img-fluid rounded" alt="About Us" style="width:300px; height:auto; margin-bottom:20px;">
+        </div>
+        <div class="col-md-6">
+          <h2 class="section-heading">About Us</h2>
+          <p>
+            At Jaweriya Saroash, we believe in empowering women through distinctive fashion. Our collections are a fusion of timeless elegance and modern innovation—each piece is meticulously crafted to celebrate individuality and inspire confidence.
+          </p>
+          <p>
+            Our passion for fashion drives us to push creative boundaries while staying true to classic charm. We are committed to excellence in every detail, ensuring that every garment not only enhances your style but also reflects a lifestyle where sophistication meets substance.
+          </p>
+          <a href="#products" class="btn btn-outline-primary mt-3">View Products</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products">
+    <div class="container" data-aos="fade-up">
+      <h2>Our Products</h2>
+      <input type="text" id="product-filter" placeholder="Search Products..." aria-label="Product Search" />
+      <div id="product-container"></div>
+    </div>
+  </section>
+
+  <!-- Contact Section with Image -->
+  <section id="contact" class="section bg-dark text-light">
+    <div class="container" data-aos="fade-up">
+      <div class="row text-center mb-5">
+        <div class="col">
+          <h2 class="section-heading">Contact Us</h2>
+          <p>Get in touch for inquiries and support.</p>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Image Column (Smaller Contact Image) -->
+        <div class="col-md-6" data-aos="fade-right">
+          <img src="hsi.jpg" alt="Contact Image" class="img-fluid rounded" style="max-width:300px; height:auto; margin-bottom:20px;">
+        </div>
+        <!-- Contact Form Column -->
+        <div class="col-md-6" data-aos="fade-left">
+          <form id="contact-form">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-secondary text-light py-3">
+    <div class="container text-center">
+      <div class="footer-links d-flex justify-content-center gap-3 mb-2">
+        <a href="https://instagram.com/jaweriyas_official" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
+        <a href="https://wa.me/923239834815" target="_blank" aria-label="WhatsApp">
+          <i class="fab fa-whatsapp fa-lg"></i>
+        </a>
+        <a href="mailto:jaweriyasofficial@gmail.com" target="_blank" aria-label="Email">
+          <i class="fas fa-envelope fa-lg"></i>
+        </a>
+      </div>
+      <p class="mb-0">&copy; 2025 Jaweriya Saroash. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-cart" aria-label="Close Cart">&times;</span>
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <button id="place-order" class="btn btn-primary mt-3">Place Order</button>
+    </div>
+  </div>
+
+  <!-- Scroll-to-Top Button -->
+  <button id="scrollToTop" aria-label="Scroll to Top">&#8679;</button>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS JS for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+
+    /* Generate 24 Products with fixed prices */
+    const products = [];
+    for (let i = 1; i <= 24; i++) {
+      let price;
+      if (i >= 1 && i <= 10) {
+        price = "2750"; // 3 Piece Suits
+      } else if (i >= 11 && i <= 14) {
+        price = "1850"; // EGO 2 Piece Suits
+      } else if (i >= 15 && i <= 24) {
+        price = "2650"; // Zeen 3 Piece Suits
+      }
+      products.push({
+        id: i,
+        specs: `Description for Product ${i}`,
+        price: price,
+        images: [`${i}.jpg`]
+      });
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function showNotification(message) {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.style.display = "block";
+      notification.classList.add("show");
+      setTimeout(() => {
+        notification.classList.remove("show");
+        setTimeout(() => (notification.style.display = "none"), 300);
+      }, 2000);
+    }
+
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      showNotification(`Added to cart!`);
+    }
+
+    function orderNow(productId) {
+      const product = products.find(p => p.id === productId);
+      const mailtoLink = `mailto:jaweriyasofficial@gmail.com?subject=Order Now - Product ${productId}&body=I would like to order the product with description: ${product.specs} at PKR ${product.price}`;
+      window.location.href = mailtoLink;
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById("cart-count").innerText = count;
+    }
+
+    function createProductCard(product) {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      const carouselId = `carousel-product-${product.id}`;
+      let slides = product.images.map((img, idx) => `
+        <div class="carousel-item ${idx === 0 ? 'active' : ''}">
+          <img src="${img}" class="d-block w-100" alt="Product Image" style="object-fit:cover;">
+        </div>
+      `).join('');
+      card.innerHTML = `
+        <div id="${carouselId}" class="carousel slide">
+          <div class="carousel-inner">
+            ${slides}
+          </div>
+          <a class="carousel-control-prev" href="#${carouselId}" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#${carouselId}" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </a>
+        </div>
+        <div class="card-content">
+          <p class="price">PKR ${product.price}</p>
+          <button onclick="addToCart(${product.id})">Add to Cart</button>
+          <button onclick="orderNow(${product.id})">Order Now</button>
+        </div>
+      `;
+      setTimeout(() => {
+        const carouselEl = document.getElementById(carouselId);
+        const bsCarousel = new bootstrap.Carousel(carouselEl, {
+          interval: 2000,
+          pause: false,
+          ride: false
+        });
+        carouselEl.addEventListener("mouseenter", () => bsCarousel.cycle());
+        carouselEl.addEventListener("mouseleave", () => bsCarousel.pause());
+      }, 0);
+      return card;
+    }
+
+    function displayProducts(filteredProducts = products) {
+      const container = document.getElementById("product-container");
+      container.innerHTML = "";
+      const group1 = filteredProducts.filter(p => p.id >= 1 && p.id <= 10);
+      const group2 = filteredProducts.filter(p => p.id >= 11 && p.id <= 14);
+      const group3 = filteredProducts.filter(p => p.id >= 15 && p.id <= 24);
+      if (group1.length > 0) {
+        const heading1 = document.createElement("h3");
+        heading1.innerText = "3 Piece Suits";
+        heading1.className = "text-center my-4";
+        container.appendChild(heading1);
+        const groupDiv1 = document.createElement("div");
+        groupDiv1.className = "products";
+        group1.forEach(product => {
+          groupDiv1.appendChild(createProductCard(product));
+        });
+        container.appendChild(groupDiv1);
+      }
+      if (group2.length > 0) {
+        const heading2 = document.createElement("h3");
+        heading2.innerText = "EGO 2 Piece Suits";
+        heading2.className = "text-center my-4";
+        container.appendChild(heading2);
+        const groupDiv2 = document.createElement("div");
+        groupDiv2.className = "products";
+        group2.forEach(product => {
+          groupDiv2.appendChild(createProductCard(product));
+        });
+        container.appendChild(groupDiv2);
+      }
+      if (group3.length > 0) {
+        const heading3 = document.createElement("h3");
+        heading3.innerText = "Zeen 3 Piece Suits";
+        heading3.className = "text-center my-4";
+        container.appendChild(heading3);
+        const groupDiv3 = document.createElement("div");
+        groupDiv3.className = "products";
+        group3.forEach(product => {
+          groupDiv3.appendChild(createProductCard(product));
+        });
+        container.appendChild(groupDiv3);
+      }
+    }
+
+    function displayCart() {
+      const cartContainer = document.getElementById("cart-items");
+      cartContainer.innerHTML = "";
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+      cart.forEach((item, index) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "cart-item";
+        itemDiv.innerHTML = `
+          <img src="${item.images[0]}" alt="Product Image" style="width:80px; height:80px; object-fit:cover;">
+          <div class="cart-details">
+            <strong>Product ${item.id}</strong><br>
+            <small>${item.specs}</small><br>
+            <span>Price: ${item.price}</span><br>
+            <span>Quantity: ${item.quantity}</span>
+          </div>
+          <div class="cart-actions">
+            <button onclick="decreaseQuantity(${item.id})" class="btn btn-sm btn-secondary">-</button>
+            <button onclick="increaseQuantity(${item.id})" class="btn btn-sm btn-secondary">+</button>
+            <button onclick="removeFromCart(${index})" class="btn btn-sm btn-danger">Remove</button>
+          </div>
+          <div class="cart-total">
+            <small>Total: PKR ${parseFloat(item.price) * item.quantity}</small>
+          </div>
+        `;
+        cartContainer.appendChild(itemDiv);
+      });
+      const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+      const totalDiv = document.createElement("div");
+      totalDiv.style.marginTop = "20px";
+      totalDiv.style.fontWeight = "bold";
+      totalDiv.innerText = "Order Total: PKR " + total;
+      cartContainer.appendChild(totalDiv);
+      const clearBtn = document.createElement("button");
+      clearBtn.innerText = "Clear Cart";
+      clearBtn.className = "btn btn-warning mt-3";
+      clearBtn.onclick = function() {
+        cart = [];
+        localStorage.removeItem("cart");
+        updateCartCount();
+        displayCart();
+      };
+      cartContainer.appendChild(clearBtn);
+    }
+
+    function increaseQuantity(productId) {
+      const item = cart.find(item => item.id === productId);
+      if (item) {
+        item.quantity += 1;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        displayCart();
+      }
+    }
+
+    function decreaseQuantity(productId) {
+      const item = cart.find(item => item.id === productId);
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity -= 1;
+        } else {
+          cart = cart.filter(i => i.id !== productId);
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        displayCart();
+      }
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      displayCart();
+    }
+
+    document.getElementById("place-order").addEventListener("click", function () {
+      if (cart.length === 0) {
+        showNotification("Your cart is empty!");
+        return;
+      }
+      let orderDetails = "New Order Received:\n\n";
+      cart.forEach((item, i) => {
+        orderDetails += `${i + 1}. Product ${item.id} - ${item.price} x ${item.quantity} = PKR ${parseFloat(item.price) * item.quantity}\n   Specs: ${item.specs}\n\n`;
+      });
+      const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+      orderDetails += "Order Total: PKR " + total;
+      const mailtoLink = `mailto:jaweriyasofficial@gmail.com?subject=New Order Received&body=${encodeURIComponent(orderDetails)}`;
+      cart = [];
+      localStorage.removeItem("cart");
+      updateCartCount();
+      document.getElementById("cart-modal").style.display = "none";
+      window.location.href = mailtoLink;
+    });
+
+    const cartModal = document.getElementById("cart-modal");
+    const cartLink = document.getElementById("cart-link");
+    const closeCart = document.getElementById("close-cart");
+    cartLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      displayCart();
+      cartModal.style.display = "block";
+    });
+    closeCart.addEventListener("click", () => (cartModal.style.display = "none"));
+    window.addEventListener("click", (e) => {
+      if (e.target === cartModal) cartModal.style.display = "none";
+    });
+
+    const filterInput = document.getElementById("product-filter");
+    filterInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = products.filter(p =>
+        p.specs.toLowerCase().includes(query)
+      );
+      displayProducts(filtered);
+    });
+
+    const scrollBtn = document.getElementById("scrollToTop");
+    window.addEventListener("scroll", () => {
+      scrollBtn.style.display =
+        document.documentElement.scrollTop > 300 ? "block" : "none";
+    });
+    scrollBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    displayProducts();
+    updateCartCount();
+
+    const contactForm = document.getElementById("contact-form");
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+      const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+      const mailtoLink = `mailto:jaweriyasofficial@gmail.com?subject=Contact Inquiry&body=${emailBody}`;
+      contactForm.reset();
+      window.location.href = mailtoLink;
+    });
+  </script>
+  <!-- Notification Element -->
+  <div id="notification"></div>
+</body>
+</html>
