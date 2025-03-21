@@ -543,7 +543,7 @@
       <span class="close-btn" id="close-detail" aria-label="Close Details">&times;</span>
       <div id="product-detail-container">
         <div id="detail-image">
-          <!-- Product image will be injected here -->
+          <!-- Product image or carousel will be injected here -->
           <img id="detail-img" src="" alt="Product Detail" class="img-fluid">
         </div>
         <div id="detail-info">
@@ -603,12 +603,15 @@
       } else if (i >= 15 && i <= 24) {
         price = "2650";
       }
+      // For IDs 15-24, use two images for the carousel; otherwise, a single image.
+      const images = (i >= 15 && i <= 24) ? [`${i}.1.jpg`, `${i}.2.jpg`] : [`${i}.jpg`];
+      
       products.push({
         id: i,
         title: `Product ${i}`,
         specs: `Description for Product ${i}. This is a detailed description of the product features and design.`,
         price: price,
-        images: [`${i}.jpg`]
+        images: images
       });
     }
 
@@ -711,7 +714,7 @@
       const group3 = filteredProducts.filter(p => p.id >= 15 && p.id <= 24);
       if (group1.length > 0) {
         const heading1 = document.createElement("h3");
-        heading1.innerText = "3 Piece Suits";
+        heading1.innerText = "Slik 3 Piece Suits";
         heading1.className = "text-center my-4";
         container.appendChild(heading1);
         const groupDiv1 = document.createElement("div");
@@ -723,7 +726,7 @@
       }
       if (group2.length > 0) {
         const heading2 = document.createElement("h3");
-        heading2.innerText = "EGO 2 Piece Suits";
+        heading2.innerText = "2 Piece Suits";
         heading2.className = "text-center my-4";
         container.appendChild(heading2);
         const groupDiv2 = document.createElement("div");
@@ -735,7 +738,7 @@
       }
       if (group3.length > 0) {
         const heading3 = document.createElement("h3");
-        heading3.innerText = "Zeen 3 Piece Suits";
+        heading3.innerText = "3 Piece Suits";
         heading3.className = "text-center my-4";
         container.appendChild(heading3);
         const groupDiv3 = document.createElement("div");
@@ -931,11 +934,45 @@
     function showProductDetail(productId) {
       const product = products.find(p => p.id === productId);
       if (!product) return;
-      // Populate modal with product data
-      document.getElementById("detail-img").src = product.images[0];
+      
+      const detailImageContainer = document.getElementById("detail-image");
+      // If there are multiple images, create a carousel; otherwise, show a single image.
+      if (product.images.length > 1) {
+        const carouselId = `detail-carousel-${product.id}`;
+        let slides = product.images.map((img, idx) => `
+          <div class="carousel-item ${idx === 0 ? 'active' : ''}">
+            <img src="${img}" class="d-block w-100" alt="Product Image" style="object-fit:cover;">
+          </div>
+        `).join('');
+        detailImageContainer.innerHTML = `
+          <div id="${carouselId}" class="carousel slide">
+            <div class="carousel-inner">
+              ${slides}
+            </div>
+            <a class="carousel-control-prev" href="#${carouselId}" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#${carouselId}" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>`;
+        // Initialize the carousel for the detail view
+        const carouselEl = document.getElementById(carouselId);
+        new bootstrap.Carousel(carouselEl, {
+          interval: 2000,
+          pause: false,
+          ride: false
+        });
+      } else {
+        detailImageContainer.innerHTML = `<img id="detail-img" src="${product.images[0]}" alt="Product Detail" class="img-fluid">`;
+      }
+      
       document.getElementById("detail-title").innerText = product.title;
       document.getElementById("detail-specs").innerText = product.specs;
       document.getElementById("detail-price").innerText = "PKR " + product.price;
+      
       // Set actions for the modal buttons
       document.getElementById("detail-add-cart").onclick = function() {
         addToCart(product.id);
@@ -944,6 +981,7 @@
       document.getElementById("detail-buy-now").onclick = function() {
         orderNow(product.id);
       };
+      
       // Show the modal
       document.getElementById("product-detail-modal").style.display = "block";
     }
