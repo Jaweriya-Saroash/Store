@@ -323,7 +323,7 @@
         font-size: 1.2rem;
       }
       .container {
-        padding: 0 15px;
+        padding: 0 10px;
       }
       #contact .row {
         flex-direction: column;
@@ -335,6 +335,11 @@
       }
       .footer-links a {
         font-size: 1.2rem;
+      }
+      /* Show 2 products side-by-side on phone with adjusted padding */
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
       }
     }
     /* Product Detail Modal Styles */
@@ -574,7 +579,7 @@
         <a href="https://instagram.com/jaweriyas_official" target="_blank" aria-label="Instagram">
           <i class="fab fa-instagram fa-lg"></i>
         </a>
-        <a href="https://wa.me/923239834815" target="_blank" aria-label="WhatsApp">
+        <a href="https://wa.me/923400434334" target="_blank" aria-label="WhatsApp">
           <i class="fab fa-whatsapp fa-lg"></i>
         </a>
         <a href="mailto:jaweriyasofficial@gmail.com" target="_blank" aria-label="Email">
@@ -925,7 +930,7 @@
         const mailtoLink = `mailto:jaweriyasofficial@gmail.com?subject=New Order Received&body=${encodeURIComponent(orderDetails)}`;
         window.location.href = mailtoLink;
       } else if (orderMethod === "whatsapp") {
-        const whatsappLink = `https://wa.me/923239834815?text=${encodeURIComponent(orderDetails)}`;
+        const whatsappLink = `https://wa.me/923400434334?text=${encodeURIComponent(orderDetails)}`;
         window.location.href = whatsappLink;
       }
     });
