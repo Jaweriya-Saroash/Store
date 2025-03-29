@@ -33,7 +33,6 @@
       font-family: 'Open Sans', sans-serif;
       background: var(--light-bg);
       color: var(--text-color);
-      transition: background var(--transition-duration), color var(--transition-duration);
       margin: 0;
       padding: 0;
     }
@@ -43,6 +42,7 @@
       font-weight: 700;
       color: var(--secondary-color);
     }
+    /* ----------------------- Top Bar ----------------------- */
     .top-bar {
       background: var(--white);
       border-bottom: 1px solid #ddd;
@@ -58,7 +58,7 @@
       background: var(--primary-color);
     }
     .navbar {
-      padding-left: 15px;
+      padding: 0.5rem 1rem;
     }
     .navbar-brand img {
       height: 50px;
@@ -67,10 +67,33 @@
       border-radius: 50%;
       margin-right: 10px;
     }
-    .navbar-dark .navbar-nav .nav-link.active,
-    .navbar-dark .navbar-nav .nav-link:hover {
-      color: var(--primary-color) !important;
+    .navbar-nav {
+      gap: 1rem;
     }
+    /* Site search input in top bar */
+    .site-search {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .site-search input {
+      padding: 5px 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .site-search button {
+      padding: 5px 8px;
+      border: none;
+      background: var(--primary-color);
+      color: var(--white);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background var(--transition-duration);
+    }
+    .site-search button:hover {
+      background: var(--primary-dark);
+    }
+    /* ----------------------- Hero Section ----------------------- */
     .hero {
       background-color: #fefaf6;
       min-height: 80vh;
@@ -122,6 +145,8 @@
       color: var(--white);
       padding: 12px 30px;
       transition: background var(--transition-duration);
+      white-space: nowrap;
+      font-size: 0.9rem;
     }
     .hero-text .btn:hover {
       background: var(--primary-dark);
@@ -136,6 +161,7 @@
       border-radius: 8px;
       object-fit: cover;
     }
+    /* ----------------------- Sections ----------------------- */
     .section {
       padding: 60px 0;
     }
@@ -194,15 +220,25 @@
       background: var(--primary-color);
       color: var(--white);
       border: none;
-      padding: 12px 15px;
-      font-size: 1em;
+      padding: 10px 12px;
+      font-size: 0.9rem;
       border-radius: 5px;
       cursor: pointer;
       transition: background var(--transition-duration);
-      margin: 5px;
+      white-space: nowrap;
     }
     .product-card button:hover {
       background: var(--primary-dark);
+    }
+    /* Group buttons in a flex container */
+    .card-content .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .card-content .btn-group button {
+      flex: 1;
     }
     .carousel-control-prev,
     .carousel-control-next {
@@ -225,9 +261,15 @@
     .carousel:hover .carousel-control-next {
       opacity: 1;
     }
-    #contact {
-      padding: 60px 0;
+    /* ----------------------- About & Contact Sections ----------------------- */
+    /* About Us comes before Contact */
+    #about, #contact {
+      padding: 60px 30px;
     }
+    #about .row, #contact .row {
+      align-items: center;
+    }
+    /* ----------------------- Modals, Notification, Scroll ----------------------- */
     .modal {
       display: none;
       position: fixed;
@@ -269,7 +311,6 @@
     .close-btn:hover {
       color: var(--accent-color);
     }
-    /* Notification */
     #notification {
       position: fixed;
       top: 50%;
@@ -288,7 +329,6 @@
     #notification.show {
       opacity: 1;
     }
-    /* Scroll-to-Top Button */
     #scrollToTop {
       position: fixed;
       bottom: 30px;
@@ -309,40 +349,43 @@
     .footer-links a {
       color: #FFD700;
     }
+    /* ----------------------- Mobile Adjustments ----------------------- */
     @media (max-width: 576px) {
-      .hero {
-        padding: 20px 0;
-      }
-      .hero-text h1 {
-        font-size: 2.2rem;
-      }
-      .hero-text p {
-        font-size: 0.95rem;
-      }
-      .navbar-brand span {
-        font-size: 1.2rem;
-      }
       .container {
-        padding: 0 10px;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 10px !important;
       }
-      #contact .row {
-        flex-direction: column;
-        align-items: center;
+      body {
+        overflow-x: hidden;
       }
-      #contact .col-md-6 {
-        max-width: 100%;
-        text-align: center;
+      .hero {
+        background: url('hsi.png') no-repeat center center/cover;
+        min-height: 80vh;
+        padding: 20px 10px;
+        position: relative;
       }
-      .footer-links a {
-        font-size: 1.2rem;
+      .hero-img {
+        display: none;
       }
-      /* Show 2 products side-by-side on phone with adjusted padding */
+      .hero-text {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+      }
       .products {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
       }
+      .card-content .btn-group button {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+      }
+      .site-search input {
+        width: 100px;
+      }
     }
-    /* Product Detail Modal Styles */
+    /* ----------------------- Product Detail Modal ----------------------- */
     #product-detail-modal .modal-content {
       max-width: 800px;
       padding: 20px;
@@ -353,19 +396,18 @@
     }
     #detail-image {
       flex: 1;
-      max-width: 50%;
+      max-width: 40%;
       padding: 10px;
     }
     #detail-info {
       flex: 1;
-      max-width: 50%;
+      max-width: 60%;
       padding: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
     #detail-info .info-top {
-      /* For product title, description and price */
     }
     #detail-info .info-bottom {
       text-align: right;
@@ -376,47 +418,44 @@
   </style>
 </head>
 <body>
-  <!-- Top Bar -->
+  <!-- ----------------------- Top Bar ----------------------- -->
   <div class="top-bar">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
+      <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand d-flex align-items-center" href="#home">
           <img src="logo.jpg" alt="Jaweriya Saroash Logo" loading="lazy" />
           <span>Jaweriya Saroash</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-          aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="#products">Shop</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#about">About Us</a>
             </li>
-            <li class="nav-item ms-3">
-              <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-light" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-              </form>
-            </li>
-            <li class="nav-item ms-3">
-              <a class="nav-link" href="#" id="cart-link">
-                Cart (<span id="cart-count">0</span>)
-              </a>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Us</a>
             </li>
           </ul>
+          <div class="site-search ms-3">
+            <input type="text" id="site-search-input" placeholder="Search site..." />
+            <button onclick="searchSite()">Go</button>
+          </div>
         </div>
+        <a class="cart-icon" href="#" id="cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          (<span id="cart-count">0</span>)
+        </a>
       </div>
     </nav>
   </div>
 
-  <!-- Hero Section -->
+  <!-- ----------------------- Hero Section ----------------------- -->
   <header id="home" class="hero">
     <div class="container">
       <div class="hero-content">
@@ -434,28 +473,7 @@
     </div>
   </header>
 
-  <!-- About Section -->
-  <section id="about" class="section">
-    <div class="container" data-aos="fade-right">
-      <div class="row align-items-center">
-        <div class="col-md-6 text-center mb-4 mb-md-0">
-          <img src="logo.jpg" class="img-fluid rounded" alt="About Us" style="width:300px; height:auto; margin-bottom:20px;">
-        </div>
-        <div class="col-md-6">
-          <h2 class="section-heading">About Us</h2>
-          <p>
-            At Jaweriya Saroash, we believe in empowering women through distinctive fashion. Our collections are a fusion of timeless elegance and modern innovation—each piece is meticulously crafted to celebrate individuality and inspire confidence.
-          </p>
-          <p>
-            Our passion for fashion drives us to push creative boundaries while staying true to classic charm. We are committed to excellence in every detail, ensuring that every garment not only enhances your style but also reflects a lifestyle where sophistication meets substance.
-          </p>
-          <a href="#products" class="btn btn-outline-primary mt-3">View Products</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Products Section -->
+  <!-- ----------------------- Products Section ----------------------- -->
   <section id="products">
     <div class="container" data-aos="fade-up">
       <h2>Our Products</h2>
@@ -464,7 +482,27 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
+  <!-- ----------------------- About Us Section ----------------------- -->
+  <section id="about">
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="section-heading">About Us</h2>
+          <p>
+            At Jaweriya Saroash, we believe in empowering women through distinctive fashion. Our collections blend timeless elegance with modern innovation—each piece is carefully crafted to celebrate individuality and inspire confidence.
+          </p>
+          <p>
+            We push creative boundaries while staying true to classic charm. Every garment not only elevates your style but also reflects a lifestyle where sophistication meets substance.
+          </p>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="logo.jpg" alt="About Us" class="img-fluid rounded" style="width:300px; height:auto;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ----------------------- Contact Section ----------------------- -->
   <section id="contact" class="section bg-dark text-light">
     <div class="container" data-aos="fade-up">
       <div class="row text-center mb-5">
@@ -498,7 +536,7 @@
     </div>
   </section>
 
-  <!-- Order Form Modal (Existing) -->
+  <!-- ----------------------- Order Form Modal ----------------------- -->
   <div id="order-modal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-order" aria-label="Close Order">&times;</span>
@@ -532,7 +570,7 @@
     </div>
   </div>
 
-  <!-- Cart Modal (Existing) -->
+  <!-- ----------------------- Cart Modal ----------------------- -->
   <div id="cart-modal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-cart" aria-label="Close Cart">&times;</span>
@@ -542,13 +580,12 @@
     </div>
   </div>
 
-  <!-- Product Detail Modal (New) -->
+  <!-- ----------------------- Product Detail Modal ----------------------- -->
   <div id="product-detail-modal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-detail" aria-label="Close Details">&times;</span>
       <div id="product-detail-container">
         <div id="detail-image">
-          <!-- Product image or carousel will be injected here -->
           <img id="detail-img" src="" alt="Product Detail" class="img-fluid">
         </div>
         <div id="detail-info">
@@ -566,13 +603,13 @@
     </div>
   </div>
 
-  <!-- Scroll-to-Top Button -->
+  <!-- ----------------------- Scroll-to-Top Button ----------------------- -->
   <button id="scrollToTop" aria-label="Scroll to Top">&#8679;</button>
 
-  <!-- Notification Element -->
+  <!-- ----------------------- Notification Element ----------------------- -->
   <div id="notification"></div>
 
-  <!-- Footer -->
+  <!-- ----------------------- Footer ----------------------- -->
   <footer class="bg-secondary text-light py-3">
     <div class="container text-center">
       <div class="footer-links d-flex justify-content-center gap-3 mb-2">
@@ -590,31 +627,67 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
+  <!-- ----------------------- Scripts ----------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- AOS JS for animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
     AOS.init({ duration: 800, once: true });
+
+    function searchSite() {
+      const query = document.getElementById("site-search-input").value.toLowerCase();
+      if (!query) return;
+      const sections = ["home", "products", "about", "contact"];
+      for (let id of sections) {
+        const section = document.getElementById(id);
+        if (section && section.textContent.toLowerCase().includes(query)) {
+          section.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+      }
+      alert("No matching section found.");
+    }
 
     /* Generate 24 Products with fixed prices */
     const products = [];
     for (let i = 1; i <= 24; i++) {
       let price;
+      let specs;
       if (i >= 1 && i <= 10) {
         price = "2750";
+        // Advanced descriptions for products 1 to 10:
+        if(i === 1) {
+          specs = `Dark Pink Elegance – This suit features a refined dark pink base accented with delicate, small white and deeper pink blossoms arranged in a graceful, random pattern. Perfect for a subtle yet sophisticated look.`;
+        } else if(i === 2) {
+          specs = `Enchanted Dark Green – Embrace nature with this dark green suit embellished with fine, small green floral motifs aligned in a sleek linear pattern, exuding timeless charm.`;
+        } else if(i === 3) {
+          specs = `Soft Pink Charm – A gentle soft pink fabric adorned with tastefully scattered pink and black floral accents, creating a look that is both elegant and effortlessly stylish.`;
+        } else if(i === 4) {
+          specs = `Bluish Grey Statement – This modern bluish grey suit is distinguished by bold, large white flowers randomly positioned to create an artistic and contemporary design.`;
+        } else if(i === 5) {
+          specs = `Traditional Collage – A vibrant suit featuring a multicolor traditional collage with dynamic block prints that celebrate cultural heritage through an artistic patchwork design.`;
+        } else if(i === 6) {
+          specs = `Sophisticated Blue – An elegant blue suit highlighted with random bursts of yellow and orange floral details, offering a dynamic contrast and a striking, refined look.`;
+        } else if(i === 7) {
+          specs = `Deep Dark Blue – This suit in dark blue is tastefully decorated with a spontaneous arrangement of white and yellow flowers, combining playful accents with a classic silhouette.`;
+        } else if(i === 8) {
+          specs = `Maroon & Earthy Brown – A rich maroon suit paired with wood brown hues, featuring an artisanal block print that transitions from light to dark brown for an exquisite, handcrafted feel.`;
+        } else if(i === 9) {
+          specs = `Radiant Yellow-Mustard – Featuring a gradient from light yellow to mustard, this suit boasts a vibrant multicolor block print that exudes modern artistry and cultural flair.`;
+        } else if(i === 10) {
+          specs = `Nocturnal Black-to-Blue – A striking design transitioning from black to blue, accentuated with crisp white floral motifs arranged in an elegant diagonal line pattern for a modern twist on classic elegance.`;
+        }
       } else if (i >= 11 && i <= 14) {
         price = "1850";
+        specs = `Description for Product ${i}. This detailed description covers all product features and design aspects.`;
       } else if (i >= 15 && i <= 24) {
         price = "2650";
+        specs = `Description for Product ${i}. This detailed description covers all product features and design aspects.`;
       }
-      // For IDs 15-24, use two images for the carousel; otherwise, a single image.
       const images = (i >= 15 && i <= 24) ? [`${i}.1.jpg`, `${i}.2.jpg`] : [`${i}.jpg`];
-      
       products.push({
         id: i,
         title: `Product ${i}`,
-        specs: `Description for Product ${i}. This is a detailed description of the product features and design.`,
+        specs: specs,
         price: price,
         images: images
       });
@@ -646,13 +719,11 @@
       showNotification("Added to cart!");
     }
 
-    // Modified orderNow function for immediate purchase from detail view
     function orderNow(productId) {
       const product = products.find(p => p.id === productId);
       cart = [{ ...product, quantity: 1 }];
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartCount();
-      // Hide any open modals
       document.getElementById("cart-modal").style.display = "none";
       document.getElementById("product-detail-modal").style.display = "none";
       document.getElementById("order-modal").style.display = "block";
@@ -666,7 +737,6 @@
     function createProductCard(product) {
       const card = document.createElement("div");
       card.className = "product-card";
-      // Prevent click on buttons from triggering the card click event
       card.addEventListener("click", function (e) {
         if (e.target.tagName !== "BUTTON") {
           showProductDetail(product.id);
@@ -694,8 +764,10 @@
         </div>
         <div class="card-content">
           <p class="price">PKR ${product.price}</p>
-          <button onclick="addToCart(${product.id}); event.stopPropagation();">Add to Cart</button>
-          <button onclick="orderNow(${product.id}); event.stopPropagation();">Buy Now</button>
+          <div class="btn-group">
+            <button onclick="addToCart(${product.id}); event.stopPropagation();">Add to Cart</button>
+            <button onclick="orderNow(${product.id}); event.stopPropagation();">Buy Now</button>
+          </div>
         </div>
       `;
       setTimeout(() => {
@@ -714,51 +786,32 @@
     function displayProducts(filteredProducts = products) {
       const container = document.getElementById("product-container");
       container.innerHTML = "";
-      const group1 = filteredProducts.filter(p => p.id >= 1 && p.id <= 10);
-      const group2 = filteredProducts.filter(p => p.id >= 11 && p.id <= 14);
-      const group3 = filteredProducts.filter(p => p.id >= 15 && p.id <= 24);
-      if (group1.length > 0) {
-        const heading1 = document.createElement("h3");
-        heading1.innerText = "Slik 3 Piece Suits";
-        heading1.className = "text-center my-4";
-        container.appendChild(heading1);
-        const groupDiv1 = document.createElement("div");
-        groupDiv1.className = "products";
-        group1.forEach(product => {
-          groupDiv1.appendChild(createProductCard(product));
-        });
-        container.appendChild(groupDiv1);
-      }
-      if (group2.length > 0) {
-        const heading2 = document.createElement("h3");
-        heading2.innerText = "2 Piece Suits";
-        heading2.className = "text-center my-4";
-        container.appendChild(heading2);
-        const groupDiv2 = document.createElement("div");
-        groupDiv2.className = "products";
-        group2.forEach(product => {
-          groupDiv2.appendChild(createProductCard(product));
-        });
-        container.appendChild(groupDiv2);
-      }
-      if (group3.length > 0) {
-        const heading3 = document.createElement("h3");
-        heading3.innerText = "3 Piece Suits";
-        heading3.className = "text-center my-4";
-        container.appendChild(heading3);
-        const groupDiv3 = document.createElement("div");
-        groupDiv3.className = "products";
-        group3.forEach(product => {
-          groupDiv3.appendChild(createProductCard(product));
-        });
-        container.appendChild(groupDiv3);
-      }
+      const groups = [
+        { title: "Slik 3 Piece Suits", range: [1, 10] },
+        { title: "2 Piece Suits", range: [11, 14] },
+        { title: "3 Piece Suits", range: [15, 24] }
+      ];
+      groups.forEach(group => {
+        const groupProducts = filteredProducts.filter(p => p.id >= group.range[0] && p.id <= group.range[1]);
+        if (groupProducts.length) {
+          const heading = document.createElement("h3");
+          heading.innerText = group.title;
+          heading.className = "text-center my-4";
+          container.appendChild(heading);
+          const groupDiv = document.createElement("div");
+          groupDiv.className = "products";
+          groupProducts.forEach(product => {
+            groupDiv.appendChild(createProductCard(product));
+          });
+          container.appendChild(groupDiv);
+        }
+      });
     }
 
     function displayCart() {
       const cartContainer = document.getElementById("cart-items");
       cartContainer.innerHTML = "";
-      if (cart.length === 0) {
+      if (!cart.length) {
         cartContainer.innerHTML = "<p>Your cart is empty.</p>";
         return;
       }
@@ -833,7 +886,6 @@
       displayCart();
     }
 
-    // Show the cart modal when the cart link is clicked
     document.getElementById("cart-link").addEventListener("click", function (e) {
       e.preventDefault();
       displayCart();
@@ -854,16 +906,14 @@
       }
     });
 
-    // Handle product filter
     document.getElementById("product-filter").addEventListener("input", function (e) {
       const query = e.target.value.toLowerCase();
       const filtered = products.filter(p =>
-        p.specs.toLowerCase().includes(query)
+        p.specs.toLowerCase().includes(query) || p.title.toLowerCase().includes(query)
       );
       displayProducts(filtered);
     });
 
-    // Scroll-to-Top Button
     const scrollBtn = document.getElementById("scrollToTop");
     window.addEventListener("scroll", () => {
       scrollBtn.style.display =
@@ -873,11 +923,9 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Display products and update cart count on page load
     displayProducts();
     updateCartCount();
 
-    // Contact form submission
     document.getElementById("contact-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const name = document.getElementById("name").value;
@@ -889,9 +937,8 @@
       window.location.href = mailtoLink;
     });
 
-    // When "Place Order" is clicked in the cart modal, hide the cart modal and show the order form modal
     document.getElementById("place-order").addEventListener("click", function () {
-      if (cart.length === 0) {
+      if (!cart.length) {
         showNotification("Your cart is empty!");
         return;
       }
@@ -899,33 +946,26 @@
       document.getElementById("order-modal").style.display = "block";
     });
 
-    // Close order modal when the close button is clicked
     document.getElementById("close-order").addEventListener("click", function () {
       document.getElementById("order-modal").style.display = "none";
     });
 
-    // Handle order form submission
     document.getElementById("order-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const name = document.getElementById("order-name").value;
       const contact = document.getElementById("order-contact").value;
       const address = document.getElementById("order-address").value;
       const orderMethod = document.querySelector('input[name="orderMethod"]:checked').value;
-
       let orderDetails = `New Order Received:\n\nCustomer: ${name}\nContact: ${contact}\nAddress: ${address}\n\nOrder Details:\n`;
       cart.forEach((item, i) => {
         orderDetails += `${i + 1}. ${item.title} - ${item.price} x ${item.quantity} = PKR ${parseFloat(item.price) * item.quantity}\n   Specs: ${item.specs}\n\n`;
       });
       const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
       orderDetails += "Order Total: PKR " + total;
-      
-      // Clear the cart after order submission
       cart = [];
       localStorage.removeItem("cart");
       updateCartCount();
       document.getElementById("order-modal").style.display = "none";
-      
-      // Process order based on selected method
       if (orderMethod === "email") {
         const mailtoLink = `mailto:jaweriyasofficial@gmail.com?subject=New Order Received&body=${encodeURIComponent(orderDetails)}`;
         window.location.href = mailtoLink;
@@ -935,13 +975,10 @@
       }
     });
 
-    // Function to show product detail modal
     function showProductDetail(productId) {
       const product = products.find(p => p.id === productId);
       if (!product) return;
-      
       const detailImageContainer = document.getElementById("detail-image");
-      // If there are multiple images, create a carousel; otherwise, show a single image.
       if (product.images.length > 1) {
         const carouselId = `detail-carousel-${product.id}`;
         let slides = product.images.map((img, idx) => `
@@ -963,22 +1000,14 @@
               <span class="visually-hidden">Next</span>
             </a>
           </div>`;
-        // Initialize the carousel for the detail view
         const carouselEl = document.getElementById(carouselId);
-        new bootstrap.Carousel(carouselEl, {
-          interval: 2000,
-          pause: false,
-          ride: false
-        });
+        new bootstrap.Carousel(carouselEl, { interval: 2000, pause: false, ride: false });
       } else {
         detailImageContainer.innerHTML = `<img id="detail-img" src="${product.images[0]}" alt="Product Detail" class="img-fluid">`;
       }
-      
       document.getElementById("detail-title").innerText = product.title;
       document.getElementById("detail-specs").innerText = product.specs;
       document.getElementById("detail-price").innerText = "PKR " + product.price;
-      
-      // Set actions for the modal buttons
       document.getElementById("detail-add-cart").onclick = function() {
         addToCart(product.id);
         document.getElementById("product-detail-modal").style.display = "none";
@@ -986,12 +1015,9 @@
       document.getElementById("detail-buy-now").onclick = function() {
         orderNow(product.id);
       };
-      
-      // Show the modal
       document.getElementById("product-detail-modal").style.display = "block";
     }
 
-    // Close product detail modal when its close button is clicked
     document.getElementById("close-detail").addEventListener("click", function () {
       document.getElementById("product-detail-modal").style.display = "none";
     });
