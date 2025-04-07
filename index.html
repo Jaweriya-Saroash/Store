@@ -19,6 +19,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 
   <style>
+    /* Prevent horizontal scrolling and set proper box-sizing */
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
     :root {
       --primary-color: #c7ab9d;
       --primary-dark: #a88f82;
@@ -47,6 +57,8 @@
       background: var(--white);
       border-bottom: 1px solid #ddd;
       position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 100;
     }
     .top-bar::before {
       content: "";
@@ -58,7 +70,7 @@
       background: var(--primary-color);
     }
     .navbar {
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
     }
     .navbar-brand img {
       height: 50px;
@@ -66,9 +78,26 @@
       object-fit: cover;
       border-radius: 50%;
       margin-right: 10px;
+      transition: transform var(--transition-duration);
+    }
+    .navbar-brand:hover img {
+      transform: scale(1.05);
     }
     .navbar-nav {
       gap: 1rem;
+    }
+    /* Advanced Cart Icon */
+    .cart-icon {
+      font-size: 1.2rem;
+      padding: 5px 10px;
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      transition: transform var(--transition-duration), background var(--transition-duration);
+    }
+    .cart-icon:hover {
+      background: var(--primary-color);
+      color: var(--white);
+      transform: scale(1.05);
     }
     /* Site search input in top bar */
     .site-search {
@@ -199,6 +228,7 @@
       transition: transform 0.3s;
       cursor: pointer;
       position: relative;
+      max-width: 100%;
     }
     .product-card:hover {
       transform: translateY(-5px);
@@ -206,6 +236,7 @@
     .card-content {
       padding: 20px;
       text-align: center;
+      word-wrap: break-word;
     }
     .card-content p {
       margin-bottom: 10px;
@@ -233,12 +264,14 @@
     /* Group buttons in a flex container */
     .card-content .btn-group {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
       margin-top: 10px;
     }
     .card-content .btn-group button {
       flex: 1;
+      min-width: 100px;
     }
     .carousel-control-prev,
     .carousel-control-next {
@@ -262,7 +295,6 @@
       opacity: 1;
     }
     /* ----------------------- About & Contact Sections ----------------------- */
-    /* About Us comes before Contact */
     #about, #contact {
       padding: 60px 30px;
     }
@@ -311,22 +343,24 @@
     .close-btn:hover {
       color: var(--accent-color);
     }
+    /* Inline Notification */
     #notification {
       position: fixed;
-      top: 50%;
+      top: 20px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.7);
+      transform: translateX(-50%);
+      background: var(--primary-color);
       color: var(--white);
-      padding: 15px 30px;
+      padding: 10px 20px;
       border-radius: 5px;
-      font-size: 1.2em;
+      font-size: 1rem;
       z-index: 3000;
       display: none;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
     #notification.show {
+      display: block;
       opacity: 1;
     }
     #scrollToTop {
@@ -349,8 +383,8 @@
     .footer-links a {
       color: #FFD700;
     }
-    /* ----------------------- Mobile Adjustments ----------------------- */
-    @media (max-width: 576px) {
+    /* ----------------------- Mobile Adjustments (Phone Layout) ----------------------- */
+    @media (max-width: 768px) {
       .container {
         max-width: 100% !important;
         margin: 0 !important;
@@ -373,6 +407,7 @@
         padding: 10px;
         border-radius: 5px;
       }
+      /* Force the products grid to 1 or 2 columns as desired on phone */
       .products {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
@@ -606,7 +641,7 @@
   <!-- ----------------------- Scroll-to-Top Button ----------------------- -->
   <button id="scrollToTop" aria-label="Scroll to Top">&#8679;</button>
 
-  <!-- ----------------------- Notification Element ----------------------- -->
+  <!-- ----------------------- Inline Notification Element ----------------------- -->
   <div id="notification"></div>
 
   <!-- ----------------------- Footer ----------------------- -->
@@ -633,18 +668,32 @@
   <script>
     AOS.init({ duration: 800, once: true });
 
+    // Replace alert with inline notification
+    function showInlineNotification(message) {
+      const notif = document.getElementById("notification");
+      notif.textContent = message;
+      notif.classList.add("show");
+      setTimeout(() => {
+        notif.classList.remove("show");
+      }, 2000);
+    }
+
     function searchSite() {
       const query = document.getElementById("site-search-input").value.toLowerCase();
       if (!query) return;
       const sections = ["home", "products", "about", "contact"];
+      let found = false;
       for (let id of sections) {
         const section = document.getElementById(id);
         if (section && section.textContent.toLowerCase().includes(query)) {
           section.scrollIntoView({ behavior: "smooth" });
-          return;
+          found = true;
+          break;
         }
       }
-      alert("No matching section found.");
+      if (!found) {
+        showInlineNotification("No matching section found.");
+      }
     }
 
     /* Generate 24 Products with fixed prices */
@@ -656,25 +705,25 @@
         price = "2750";
         // Advanced descriptions for products 1 to 10:
         if(i === 1) {
-          specs = `Dark Pink Elegance – This suit features a refined dark pink base accented with delicate, small white and deeper pink blossoms arranged in a graceful, random pattern. Perfect for a subtle yet sophisticated look.`;
+          specs = `Dark Pink Elegance – This suit features a refined dark pink base accented with delicate small white and deeper pink blossoms arranged in a graceful, random pattern. Perfect for a subtle yet sophisticated look.`;
         } else if(i === 2) {
-          specs = `Enchanted Dark Green – Embrace nature with this dark green suit embellished with fine, small green floral motifs aligned in a sleek linear pattern, exuding timeless charm.`;
+          specs = `Enchanted Dark Green – Embrace nature with this dark green suit embellished with fine small green floral motifs in a sleek linear pattern, exuding timeless charm.`;
         } else if(i === 3) {
-          specs = `Soft Pink Charm – A gentle soft pink fabric adorned with tastefully scattered pink and black floral accents, creating a look that is both elegant and effortlessly stylish.`;
+          specs = `Soft Pink Charm – A gentle soft pink fabric adorned with tastefully scattered pink and black floral accents, creating an elegant and effortlessly stylish look.`;
         } else if(i === 4) {
-          specs = `Bluish Grey Statement – This modern bluish grey suit is distinguished by bold, large white flowers randomly positioned to create an artistic and contemporary design.`;
+          specs = `Bluish Grey Statement – This modern bluish grey suit is distinguished by bold large white flowers, randomly placed for an artistic and contemporary design.`;
         } else if(i === 5) {
-          specs = `Traditional Collage – A vibrant suit featuring a multicolor traditional collage with dynamic block prints that celebrate cultural heritage through an artistic patchwork design.`;
+          specs = `Traditional Collage – A vibrant suit featuring a multicolor traditional collage with dynamic block prints that celebrate heritage through an artistic patchwork design.`;
         } else if(i === 6) {
-          specs = `Sophisticated Blue – An elegant blue suit highlighted with random bursts of yellow and orange floral details, offering a dynamic contrast and a striking, refined look.`;
+          specs = `Sophisticated Blue – An elegant blue suit accented with random bursts of yellow and orange floral details, offering a dynamic contrast and a striking refined look.`;
         } else if(i === 7) {
-          specs = `Deep Dark Blue – This suit in dark blue is tastefully decorated with a spontaneous arrangement of white and yellow flowers, combining playful accents with a classic silhouette.`;
+          specs = `Deep Dark Blue – This suit in deep blue is tastefully decorated with a spontaneous arrangement of white and yellow flowers, combining playful accents with classic style.`;
         } else if(i === 8) {
-          specs = `Maroon & Earthy Brown – A rich maroon suit paired with wood brown hues, featuring an artisanal block print that transitions from light to dark brown for an exquisite, handcrafted feel.`;
+          specs = `Maroon & Earthy Brown – A rich maroon suit paired with wood brown hues, featuring an artisanal block print that transitions from light to dark brown for an exquisite handcrafted feel.`;
         } else if(i === 9) {
           specs = `Radiant Yellow-Mustard – Featuring a gradient from light yellow to mustard, this suit boasts a vibrant multicolor block print that exudes modern artistry and cultural flair.`;
         } else if(i === 10) {
-          specs = `Nocturnal Black-to-Blue – A striking design transitioning from black to blue, accentuated with crisp white floral motifs arranged in an elegant diagonal line pattern for a modern twist on classic elegance.`;
+          specs = `Nocturnal Black-to-Blue – A striking design transitioning from black to blue, accented with crisp white floral motifs in an elegant diagonal line pattern for a modern twist on classic elegance.`;
         }
       } else if (i >= 11 && i <= 14) {
         price = "1850";
@@ -695,15 +744,9 @@
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    function showNotification(message) {
-      const notification = document.getElementById("notification");
-      notification.textContent = message;
-      notification.style.display = "block";
-      notification.classList.add("show");
-      setTimeout(() => {
-        notification.classList.remove("show");
-        setTimeout(() => (notification.style.display = "none"), 300);
-      }, 2000);
+    function showInlineCartNotification(message) {
+      // Use the same inline notification element if needed
+      showInlineNotification(message);
     }
 
     function addToCart(productId) {
@@ -716,7 +759,7 @@
       }
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartCount();
-      showNotification("Added to cart!");
+      showInlineCartNotification("Added to cart!");
     }
 
     function orderNow(productId) {
@@ -939,7 +982,7 @@
 
     document.getElementById("place-order").addEventListener("click", function () {
       if (!cart.length) {
-        showNotification("Your cart is empty!");
+        showInlineNotification("Your cart is empty!");
         return;
       }
       document.getElementById("cart-modal").style.display = "none";
