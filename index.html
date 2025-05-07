@@ -616,7 +616,10 @@
   </div>
 
   <!-- ----------------------- Product Detail Modal ----------------------- -->
-  <div id="product-detail-modal" class="modal">
+<h1>Product List</h1>
+<ul id="product-list">Loading products...</ul>
+  
+<div id="product-detail-modal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-detail" aria-label="Close Details">&times;</span>
       <div id="product-detail-container">
@@ -741,6 +744,7 @@
         images: images
       });
     }
+
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -1065,5 +1069,23 @@
       document.getElementById("product-detail-modal").style.display = "none";
     });
   </script>
+<script>
+  fetch('https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/products.json')
+    .then(res => res.json())
+    .then(products => {
+      const ul = document.getElementById('product-list');
+      ul.innerHTML = '';
+      products.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.name} - $${p.price}`;
+        ul.appendChild(li);
+      });
+    })
+    .catch(err => {
+      document.getElementById('product-list').innerHTML = 'Failed to load products.';
+      console.error(err);
+    });
+</script>
+
 </body>
 </html>
