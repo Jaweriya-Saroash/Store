@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .hidden { display: none; }
+    .product, .order { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    input, textarea { width: 100%; margin: 5px 0; padding: 5px; }
+    button { padding: 6px 10px; margin: 5px; }
+  </style>
+</head>
+<body>
+
+<h2>Admin Login</h2>
+<div id="login">
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<div id="dashboard" class="hidden">
+  <h2>Admin Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+
+  <h3>Add Product</h3>
+  <input id="newName" placeholder="Name">
+  <input id="newPrice" placeholder="Price">
+  <input id="newImage" placeholder="Image URL">
+  <textarea id="newDesc" placeholder="Description"></textarea>
+  <button onclick="addProduct()">Add Product</button>
+
+  <h3>Products</h3>
+  <div id="products"></div>
+
+  <h3>Orders</h3>
+  <div id="orders"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ✅ Your Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBK3-pwsaWS3Q1W7R6JzZl5FUD5HPp828o",
+    authDomain: "admin-dashboard-231ba.firebaseapp.com",
+    projectId: "admin-dashboard-231ba",
+    storageBucket: "admin-dashboard-231ba.firebasestorage.app",
+    messagingSenderId: "541580373349",
+    appId: "1:541580373349:web:efb13f3a2d9cff5c9a858c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const loginDiv = document.getElementById('login');
+  const dashDiv = document.getElementById('dashboard');
+  const productsDiv = document.getElementById('products');
+  const ordersDiv = document.getElementById('orders');
+
+  function login() {
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    signInWithEmailAndPassword(auth, email, pass)
+      .then(() => alert("Logged in"))
+      .catch(e => alert("Login error: " + e.message));
+  }
+
+  function logout() {
+    signOut(auth);
+  }
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      loginDiv.classList.add("hidden");
+      dashDiv.classList.remove("hidden");
+      loadProducts();
+      loadOrders();
+    } else {
+      loginDiv.classList.remove("hidden");
+      dashDiv.classList.add("hidden");
+    }
+  });
+
+  async function addProduct() {
+    const name = document.getElementById("newName").value;
+    const price = document.getElementById("newPrice").value;
+    const image = document.getElementById("newImage").value;
+    const desc = document.getElementById("newDesc").value;
+    await addDoc(collection(db, "products"), { name, price, image, desc });
+    alert("Product added");
+  }
+
+  async function loadProducts() {
+    productsDiv.innerHTML = '';
+    const querySnapshot = await getDocs(collection(db, "products"));
+    querySnapshot.forEach(docSnap => {
+      const p = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
+        <b>${p.name}</b><br>
+        <img src="${p.image}" width="100"><br>
+        $${p.price}<br>
+        ${p.desc}<br>
+        <button onclick="editProduct('${docSnap.id}')">Edit</button>
+        <button onclick="deleteProduct('${docSnap.id}')">Delete</button>
+      `;
+      productsDiv.appendChild(div);
+    });
+  }
+
+  async function editProduct(id) {
+    const name = prompt("New name?");
+    const price = prompt("New price?");
+    const image = prompt("New image URL?");
+    const desc = prompt("New description?");
+    const ref = doc(db, "products", id);
+    await updateDoc(ref, { name, price, image, desc });
+    alert("Product updated");
+    loadProducts();
+  }
+
+  async function deleteProduct(id) {
+    if (confirm("Delete product?")) {
+      await deleteDoc(doc(db, "products", id));
+      alert("Deleted");
+      loadProducts();
+    }
+  }
+
+  async function loadOrders() {
+    ordersDiv.innerHTML = '';
+    const querySnapshot = await getDocs(collection(db, "orders"));
+    querySnapshot.forEach(docSnap => {
+      const o = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "order";
+      div.innerHTML = `
+        <b>Order from:</b> ${o.name || 'Unknown'}<br>
+        <b>Email:</b> ${o.email || 'N/A'}<br>
+        <b>Items:</b> ${JSON.stringify(o.items || {})}
+      `;
+      ordersDiv.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
